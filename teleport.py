@@ -1,5 +1,4 @@
 import qiskit as qk
-import math
 
 qr = qk.QuantumRegister(3)
 cr0 = qk.ClassicalRegister(1)
@@ -8,9 +7,7 @@ cr2 = qk.ClassicalRegister(1)
 qc = qk.QuantumCircuit(qr, cr0, cr1, cr2)
 
 # Prepare an initial state
-qc.u3(0, 0, 0, qr[0])  # U3 gate: sets the angle of x,y,z in radians ?
-qc.u3(0, 0, 0, qr[1])  # U3 gate: sets the angle of x,y,z in radians ?
-qc.u3(0, 0, 0, qr[2])  # U3 gate: sets the angle of x,y,z in radians ?
+qc.u3(0.3, 0.2, 0.1, qr[0])  # U3 gate: sets the angle of x,y,z in radians ?
 
 # Prepare a Bell pair
 qc.h(qr[1])
@@ -26,8 +23,8 @@ qc.measure(qr[0], cr0[0])
 qc.measure(qr[1], cr1[0])
 
 # Apply a correction
-qc.z(qr[2]).c_if(cr0, 1)
-qc.x(qr[2]).c_if(cr1, 1)
+qc.z(qr[2]).c_if(cr0, 1) # phase-flip(+0, +0, +pi)
+qc.x(qr[2]).c_if(cr1, 1) # Classical NOT gate (+pi, +0, +pi) bit-flip
 qc.measure(qr[2], cr2[0])
 
 # loads the backend
